@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Hi, {{ user.username }}</h1>
+<br>
+{% if user.team %}
+    <h3>Your team: {{ team.name }}</h3>
+    <h5>Country: {{ team.country }}</h5>
+    <h5>Cash: ${{ team.cash_available }}</h5>
+    <h5>Team value: ${{ team_value }}</h5>
+    <form action="/edit/team">
+        <button type="submit" class="btn btn-primary">Edit team</button>
+    </form>
+    <br>
+    <hr>
+    <h3>Your players ({{ team.players.__len__() }}):</h3>
+    {% if team.players %}
+        {% for player in team.players %}
+        <div>
+            <h4>{{ player.first_name }} {{ player.last_name }}</h4>
+            <h6>country: {{ player.country }}</h6>
+            <h6>age: {{ player.age }}</h6>
+            <h6>position: {{ player.position }}</h6>
+            <h6>market value: ${{ player.market_value }}</h6>
+            <form action="/edit/player/{{ player.id }}">
+                <button type="submit" class="btn btn-primary">Edit player</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <h5>No players found. Generate players now!</h5>
+    {% endif %}
+{% else %}
+    <form method="POST">
+        <h3 align="center">You do not have a team yet. Let's create one!</h3>
+        <div class="form-group">
+            <label for="teamName">Team name</label>
+            <input type="text" class="form-control" id="teamName" name="teamName" placeholder="Enter team name">
+        </div>
+        <div class="form-group">
+            <label for="teamCountry">Country</label>
+            <select id="teamCountry" name="teamCountry">
+                {% for country in country_list %}
+                <option value="{{ country }}">{{ country }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Create dream team!</button>
+    </form>
+{% endif %}
+{% endblock %}

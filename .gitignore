@@ -1,0 +1,5 @@
+.idea
+*.txt
+website/__pycache__
+website/*.db
+venv

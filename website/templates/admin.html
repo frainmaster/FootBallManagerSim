@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+<br>
+<h1>Welcome to admin page, {{ user.username }}</h1>
+<br>
+<h5>All users: {{ ', '.join(all_users) }}</h5>
+<h3>Search user</h3>
+<form method="POST">
+    <div align="center">
+        <input type="text" class="form-control" id="getUser" name="getUser" placeholder="Search user by email/username">
+        <button type="submit" class="btn btn-primary">Search user</button>
+    </div>
+</form>
+<br>
+{% if get_user %}
+    <h2>Username: {{ get_user.username }}</h2>
+    <h4>id: {{ get_user.id }}</h4>
+    <h4>email: {{ get_user.email }}</h4>
+    <h4>signup_date: {{ get_user.signup_date }}</h4>
+    <h4>object: {{ get_user }}</h4>
+    <br>
+    <hr>
+    <h2>Team</h2>
+    {% if get_user.team %}
+        <h4>id: {{ get_user.team[0].id }}</h4>
+        <h4>name: {{ get_user.team[0].name }}</h4>
+        <h4>country: {{ get_user.team[0].country }}</h4>
+        <h4>cash_available: {{ get_user.team[0].cash_available }}</h4>
+        <h4>user_id: {{ get_user.team[0].user_id }}</h4>
+        <h4>players: {{ get_user.team[0].players }}</h4>
+        <h4>object: {{ get_user.team[0] }}</h4>
+        <br>
+        <hr>
+        <h2>Players ({{ get_user.team[0].players.__len__() }})</h2>
+        {% if get_user.team[0].players %}
+            {% for player in get_user.team[0].players %}
+            <h3>name: {{ player.first_name }} {{ player.last_name }}</h3>
+            <h6>country: {{ player.country }}</h6>
+            <h6>age: {{ player.age }}</h6>
+            <h6>position: {{ player.position }}</h6>
+            <h6>market_value: {{ player.market_value }}</h6>
+            <h6>is_on_sale: {{ player.is_on_sale }}</h6>
+            <h6>selling_price: {{ player.selling_price }}</h6>
+            <h6>team_id: {{ player.team_id }}</h6>
+            <h6>object: {{ player }}</h6>
+            {% endfor %}
+        {% else %}
+            <h4>No players found</h4>
+        {% endif %}
+    {% else %}
+        <h4>No team found</h4>
+    {% endif %}
+{% else %}
+    <h3>User not found</h3>
+{% endif %}
+{% endblock %}

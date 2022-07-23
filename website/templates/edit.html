@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if mode == 'team' %}
+<h3>Edit team</h3>
+<form method="POST">
+    <div class="form-group">
+        <label for="teamName">Name</label>
+        <input type="text"
+               class="form-control"
+               id="teamName"
+               name="teamName"
+               placeholder="Change team name"
+               value="{{ team.name }}">
+    </div>
+    <div class="form-group">
+        <label for="teamCountry">Country</label>
+        <select id="teamCountry" name="teamCountry">
+            {% for country in country_list %}
+            {% if country == team.country %}
+                <option value="{{ country }}" selected="selected">{{ country }}</option>
+            {% else %}
+                <option value="{{ country }}">{{ country }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update team</button>
+</form>
+{% elif mode == 'player' %}
+<h3>Edit player</h3>
+<form method="POST">
+    <div class="form-group">
+        <label for="playerFirstName">First name</label>
+        <input type="text"
+               class="form-control"
+               id="playerFirstName"
+               name="playerFirstName"
+               placeholder="Change first name"
+               value="{{ player.first_name }}">
+    </div>
+    <div class="form-group">
+        <label for="playerLastName">Last name</label>
+        <input type="text"
+               class="form-control"
+               id="playerLastName"
+               name="playerLastName"
+               placeholder="Change last name"
+               value="{{ player.last_name }}">
+    </div>
+    <div class="form-group">
+        <label for="playerCountry">Country</label>
+        <select id="playerCountry" name="playerCountry">
+            {% for country in country_list %}
+            {% if country == player.country %}
+                <option value="{{ country }}" selected="selected">{{ country }}</option>
+            {% else %}
+                <option value="{{ country }}">{{ country }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update player</button>
+</form>
+{% endif %}
+{% endblock %}

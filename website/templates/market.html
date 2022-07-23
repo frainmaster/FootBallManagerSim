@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Transfer List{% endblock %}
+
+{% block content %}
+<h1>Transfer List</h1>
+<br>
+<h5>Your cash: ${{ team.cash_available }}</h5>
+<br>
+{% if players_on_sale %}
+    {% for player, current_team in players_on_sale %}
+    <h4>{{ player.first_name }} {{ player.last_name }}</h4>
+    <h5>${{ player.selling_price }}</h5>
+    <h6>country: {{ player.country }}</h6>
+    <h6>age: {{ player.age }}</h6>
+    <h6>position: {{ player.position }}</h6>
+    <h6>team: {{ current_team.name }}</h6>
+    <form method="POST">
+    {% if team.id != current_team.id %}
+        <input type="hidden" id="playerToBuy" name="playerToBuy" value="{{ player.id }}">
+    {% else %}
+        <input type="hidden" id="cancelSell" name="cancelSell" value="{{ player.id }}">
+    {% endif %}
+    <button type="submit" class="btn btn-primary">
+        {% if team.id != current_team.id %}Buy{% else %}Cancel sell{% endif %} player
+    </button>
+    </form>
+    {% endfor %}
+{% else %}
+    <h4>No players on sale</h4>
+{% endif %}
+<hr>
+<h3>Put a player on the transfer list!</h3>
+<form method="POST">
+    <div class="form-group">
+        <label for="player">Select player</label>
+        <select id="player" name="player">
+            {% for player in team.players %}
+            {% if not player.is_on_sale %}
+                <option value="{{ player.id }}">
+                    {{ player.first_name }} {{ player.last_name }}, {{ player.position }}
+                </option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="sellPrice">Sell for: $</label>
+        <input type="number"
+               class="form-control"
+               id="sellPrice"
+               name="sellPrice"
+               placeholder="Insert selling price">
+    </div>
+    <button type="submit" class="btn btn-primary">Sell player</button>
+</form>
+{% endblock %}
